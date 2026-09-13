@@ -1,0 +1,2 @@
+export type Product={id:string,name:string,slug:string,category:string,description:string,price:number,stock:number,image_url:string|null,rating:number|null,sales:number,active:boolean}
+export type CartItem={product:Product,qty:number,size:string}
