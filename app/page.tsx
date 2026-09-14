@@ -12,7 +12,7 @@ const demo:Product[]=[
 ]
 export default function Home(){
  const [products,setProducts]=useState<Product[]>(demo),[q,setQ]=useState(''),[cat,setCat]=useState('Semua'),[cart,setCart]=useState<CartItem[]>([]),[wish,setWish]=useState<string[]>([])
- useEffect(()=>{supabaseBrowser().from('products').select('*').eq('active',true).order('created_at',{ascending:false}).then(({data})=>{if(data?.length)setProducts(data as Product[])});setCart(JSON.parse(localStorage.getItem('stg_cart')||'[]'));setWish(JSON.parse(localStorage.getItem('stg_wish')||'[]'))},[])
+ useEffect(()=>{(async()=>{try{const {data}=await supabaseBrowser().from('products').select('*').eq('active',true).order('created_at',{ascending:false});if(data?.length)setProducts(data.map((p:any)=>({...p,name:p.name||'Produk',category:p.category||'Basic Tee',price:Number(p.price)||0,stock:Number(p.stock)||0})) as Product[])}catch{}try{setCart(JSON.parse(localStorage.getItem('stg_cart')||'[]'))}catch{}try{setWish(JSON.parse(localStorage.getItem('stg_wish')||'[]'))}catch{}})()},[])
  const filtered=products.filter(p=>(cat==='Semua'||p.category===cat)&&(`${p.name} ${p.category}`).toLowerCase().includes(q.toLowerCase()))
  const add=(p:Product)=>{const x=[...cart];const old=x.find(i=>i.product.id===p.id&&i.size==='M');if(old)old.qty++;else x.push({product:p,qty:1,size:'M'});setCart(x);localStorage.setItem('stg_cart',JSON.stringify(x))}
  const fav=(id:string)=>{const x=wish.includes(id)?wish.filter(i=>i!==id):[...wish,id];setWish(x);localStorage.setItem('stg_wish',JSON.stringify(x))}
