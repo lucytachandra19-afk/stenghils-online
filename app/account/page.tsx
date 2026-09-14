@@ -1,5 +1,0 @@
-'use client'
-import {useEffect,useState} from 'react'
-import Link from 'next/link'
-import {supabaseBrowser} from '../../lib/supabase'
-export default function Account(){const [email,setEmail]=useState(''),[orders,setOrders]=useState<any[]>([]);useEffect(()=>{const s=supabaseBrowser();s.auth.getUser().then(async({data})=>{if(!data.user)return location.href='/login';setEmail(data.user.email||'');const {data:o}=await s.from('orders').select('*').eq('user_id',data.user.id).order('created_at',{ascending:false});setOrders(o||[])})},[]);async function out(){await supabaseBrowser().auth.signOut();location.href='/'}return <main className="section"><div className="wrap"><Link href="/">← Kembali</Link><h1>Akun Saya</h1><p>{email}</p><button className="btn" onClick={out}>LOGOUT</button><h2>Riwayat Pesanan</h2>{orders.map(o=><div className="panel" key={o.id} style={{margin:'10px 0'}}><b>{o.order_no}</b><br/>Status: <b>{o.status}</b><br/>Total: Rp {Number(o.total).toLocaleString('id-ID')}</div>)}</div></main>}
