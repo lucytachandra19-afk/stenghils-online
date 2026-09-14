@@ -1,25 +1,211 @@
 'use client'
-import {useEffect,useState} from 'react'
-import Link from 'next/link'
-import {supabaseBrowser} from '../lib/supabase'
-import type {Product,CartItem} from '../lib/types'
 
-const demo:Product[]=[
-{id:'1',name:'Classic Logo Tee',slug:'classic-logo-tee',category:'Logo Tee',description:'Logo STENGHILS clean dengan potongan regular.',price:150000,stock:18,image_url:null,rating:4.9,sales:120,active:true},
-{id:'2',name:'Love Is Dog Tee',slug:'love-is-dog-tee',category:'Graphic Tee',description:'Graphic statement dengan karakter playful.',price:150000,stock:7,image_url:null,rating:4.8,sales:108,active:true},
-{id:'3',name:'Urban Photo Tee',slug:'urban-photo-tee',category:'Photo Tee',description:'Foto monokrom bernuansa urban.',price:170000,stock:4,image_url:null,rating:4.9,sales:96,active:true},
-{id:'4',name:'Simple Logo Tee',slug:'simple-logo-tee',category:'Basic Tee',description:'Logo minimalis untuk gaya sehari-hari.',price:140000,stock:22,image_url:null,rating:4.7,sales:82,active:true},
-]
-export default function Home(){
- const [products,setProducts]=useState<Product[]>(demo),[q,setQ]=useState(''),[cat,setCat]=useState('Semua'),[cart,setCart]=useState<CartItem[]>([]),[wish,setWish]=useState<string[]>([])
- useEffect(()=>{(async()=>{try{const {data}=await supabaseBrowser().from('products').select('*').eq('active',true).order('created_at',{ascending:false});if(data?.length)setProducts(data.map((p:any)=>({...p,name:p.name||'Produk',category:p.category||'Basic Tee',price:Number(p.price)||0,stock:Number(p.stock)||0})) as Product[])}catch{}try{setCart(JSON.parse(localStorage.getItem('stg_cart')||'[]'))}catch{}try{setWish(JSON.parse(localStorage.getItem('stg_wish')||'[]'))}catch{}})()},[])
- const filtered=products.filter(p=>(cat==='Semua'||p.category===cat)&&(`${p.name} ${p.category}`).toLowerCase().includes(q.toLowerCase()))
- const add=(p:Product)=>{const x=[...cart];const old=x.find(i=>i.product.id===p.id&&i.size==='M');if(old)old.qty++;else x.push({product:p,qty:1,size:'M'});setCart(x);localStorage.setItem('stg_cart',JSON.stringify(x))}
- const fav=(id:string)=>{const x=wish.includes(id)?wish.filter(i=>i!==id):[...wish,id];setWish(x);localStorage.setItem('stg_wish',JSON.stringify(x))}
- return <><header className="nav"><div className="wrap navin"><Link className="brand" href="/">STENGHILS</Link><nav className="navlinks"><a href="#produk">PRODUK</a><a href="#about">TENTANG</a><a href="#faq">FAQ</a><Link href="/login">AKUN</Link><Link href="/admin">ADMIN</Link></nav><div className="grow"/><input className="search" placeholder="Cari..." value={q} onChange={e=>setQ(e.target.value)}/><Link className="btn light" href="/cart">🛒 {cart.reduce((a,x)=>a+x.qty,0)}</Link></div></header>
- <section className="hero"><div className="wrap"><div className="eyebrow">INDEPENDENT STREETWEAR</div><h1>TAMPIL BEDA<br/>SETIAP HARI.</h1><p style={{maxWidth:520,lineHeight:1.6}}>STENGHILS — lebih dari sekadar kaos. Originality, quality, community.</p><a className="btn light" href="#produk">BELANJA SEKARANG →</a></div></section>
- <section id="produk" className="section"><div className="wrap"><div className="head"><div><h2>PRODUK</h2><span className="muted">Stok dan harga diperbarui dari database.</span></div></div><div className="row" style={{marginBottom:18}}><button className="btn out" onClick={()=>setCat('Semua')}>Semua</button>{['Logo Tee','Graphic Tee','Photo Tee','Basic Tee'].map(c=><button key={c} className="btn out" onClick={()=>setCat(c)}>{c}</button>)}</div><div className="grid">{filtered.map(p=><article className="card" key={p.id}><div className="pic">{p.image_url?<img src={p.image_url} alt={p.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/>:<div className={`shirt ${p.category==='Basic Tee'?'olive':p.category==='Graphic Tee'?'white':''}`}/>}<button onClick={()=>fav(p.id)} style={{position:'absolute',right:10,top:10,border:0,borderRadius:'50%',width:36,height:36}}>{wish.includes(p.id)?'♥':'♡'}</button></div><div className="cardbody"><small className="muted">{p.category}</small><h3>{p.name}</h3><div className="price">Rp {p.price.toLocaleString('id-ID')}</div><p className={`stock ${p.stock===0?'no':p.stock<=5?'low':'ok'}`}>{p.stock===0?'HABIS':p.stock<=5?`TERBATAS · ${p.stock} pcs`:`TERSEDIA · ${p.stock} pcs`}</p><div className="row"><button className="btn" disabled={!p.stock} onClick={()=>add(p)}>+ KERANJANG</button><Link className="btn out" href={`/product/${p.slug}`}>DETAIL</Link></div></div></article>)}</div></div></section>
- <section id="about" className="section"><div className="wrap"><div className="panel"><div className="eyebrow">TENTANG STENGHILS</div><h2>MORE THAN JUST A T-SHIRT.</h2><p>STENGHILS lahir dari semangat street culture dan kebebasan berekspresi. Kami menghadirkan pakaian dengan desain original, kualitas yang jujur, dan karakter kuat.</p><p><b>Visi:</b> menjadi brand streetwear Indonesia yang berani dan relevan.</p><p><b>Nilai:</b> Originality · Quality · Community · Confidence.</p></div></div></section>
- <section id="faq" className="section"><div className="wrap"><div className="panel"><h2>FAQ</h2><details open><summary>Berapa lama pengiriman?</summary><p>Proses 1–3 hari kerja, waktu kurir bergantung tujuan.</p></details><details><summary>Bagaimana retur?</summary><p>Hubungi CS maksimal 2×24 jam setelah diterima. Produk belum dicuci/dipakai dan label masih terpasang.</p></details><details><summary>Apakah stok real-time?</summary><p>Ya, katalog membaca stok dari database pada versi online ini.</p></details></div></div></section>
- <footer className="footer"><div className="wrap footergrid"><div><div className="brand">STENGHILS</div><p>More Than Just A T-Shirt.</p></div><div><b>Kontak</b><p>WhatsApp: +62 812-3456-7890<br/>Email: cs@stenghils.co.id</p></div><div><b>Sosial</b><p>Instagram · TikTok · Facebook</p></div></div></footer></>
+import { useState } from 'react'
+import Link from 'next/link'
+
+export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [currencyOpen, setCurrencyOpen] = useState(false)
+  const [subscribeOpen, setSubscribeOpen] = useState(false)
+  const [currency, setCurrency] = useState('IDR')
+
+  const currencies = [
+    { code: 'USD', name: 'US Dollar (USD)', flag: '🇺🇸' },
+    { code: 'EUR', name: 'Euro (EUR)', flag: '🇪🇺' },
+    { code: 'MYR', name: 'Malaysian Ringgit (MYR)', flag: '🇲🇾' },
+    { code: 'IDR', name: 'Indonesian Rupiah (IDR)', flag: '🇮🇩' },
+  ]
+
+  return (
+    <main className="home">
+
+      {/* HEADER */}
+      <header className="site-header">
+
+        <button
+          className="icon-btn"
+          onClick={() => setMenuOpen(true)}
+          aria-label="Menu"
+        >
+          ☰
+        </button>
+
+        <button className="icon-btn" aria-label="Search">
+          ⌕
+        </button>
+
+        <Link href="/" className="logo">
+          STENGHILS
+        </Link>
+
+        <Link href="/account" className="icon-btn" aria-label="Account">
+          ♙
+        </Link>
+
+        <Link href="/cart" className="icon-btn" aria-label="Cart">
+          ♧
+        </Link>
+
+      </header>
+
+      {/* HERO */}
+      <section className="hero">
+
+        <div className="hero-overlay"></div>
+
+        <div className="hero-content">
+          <p className="hero-small">
+            STENGHILS
+          </p>
+
+          <h1>
+            BLACK<br />
+            CAPSULE
+          </h1>
+
+          <p className="hero-date">
+            ONLINE RELEASE · 12.09.26
+          </p>
+
+          <Link href="/shop" className="hero-button">
+            SHOP NOW
+          </Link>
+        </div>
+
+      </section>
+
+      {/* SIDE MENU */}
+      {menuOpen && (
+        <div className="menu-overlay">
+
+          <div className="side-menu">
+
+            <button
+              className="close-btn"
+              onClick={() => setMenuOpen(false)}
+            >
+              ×
+            </button>
+
+            <nav>
+              <Link
+                href="/"
+                onClick={() => setMenuOpen(false)}
+              >
+                HOME
+              </Link>
+
+              <Link
+                href="/shop"
+                onClick={() => setMenuOpen(false)}
+              >
+                SHOP
+                <span>›</span>
+              </Link>
+
+              <Link
+                href="/lookbooks"
+                onClick={() => setMenuOpen(false)}
+              >
+                LOOKBOOKS
+              </Link>
+            </nav>
+
+            {/* CURRENCY */}
+            <div className="currency-box">
+
+              <button
+                className="currency-current"
+                onClick={() =>
+                  setCurrencyOpen(!currencyOpen)
+                }
+              >
+                <span>🇮🇩</span>
+                <b>{currency}</b>
+                <span>
+                  {currencyOpen ? '⌃' : '⌄'}
+                </span>
+              </button>
+
+              {currencyOpen && (
+                <div className="currency-list">
+
+                  <div className="currency-title">
+                    Currency
+                  </div>
+
+                  {currencies.map((item) => (
+                    <button
+                      key={item.code}
+                      onClick={() => {
+                        setCurrency(item.code)
+                        setCurrencyOpen(false)
+                      }}
+                    >
+                      <span>{item.flag}</span>
+                      <span>{item.name}</span>
+                    </button>
+                  ))}
+
+                </div>
+              )}
+
+            </div>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* SUBSCRIBE BUTTON */}
+      <button
+        className="subscribe-button"
+        onClick={() => setSubscribeOpen(true)}
+      >
+        SUBSCRIBE
+      </button>
+
+      {/* SUBSCRIBE POPUP */}
+      {subscribeOpen && (
+        <div className="subscribe-overlay">
+
+          <div className="subscribe-modal">
+
+            <button
+              className="subscribe-close"
+              onClick={() => setSubscribeOpen(false)}
+            >
+              ×
+            </button>
+
+            <h2>Subscribe</h2>
+
+            <p>
+              Complete the form to subscribe.
+            </p>
+
+            <input
+              type="email"
+              placeholder="Email"
+            />
+
+            <button
+              className="subscribe-submit"
+              onClick={() => setSubscribeOpen(false)}
+            >
+              Submit
+            </button>
+
+            <small>
+              By signing up, you agree to receive
+              marketing emails.
+            </small>
+
+          </div>
+
+        </div>
+      )}
+
+    </main>
+  )
 }
