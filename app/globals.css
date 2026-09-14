@@ -1,1 +1,150 @@
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f3ef;color:#111;font-family:Arial,sans-serif}a{text-decoration:none;color:inherit}button,input,select,textarea{font:inherit}.wrap{max-width:1180px;margin:auto;padding:0 18px}.nav{position:sticky;top:0;z-index:20;background:#101112;color:white;border-bottom:1px solid #333}.navin{height:68px;display:flex;align-items:center;gap:20px}.brand{font-size:27px;font-weight:900;font-style:italic;letter-spacing:-2px}.navlinks{display:flex;gap:18px;font-size:11px;font-weight:800}.grow{flex:1}.search{background:#242527;border:1px solid #555;color:white;padding:10px;border-radius:5px}.hero{min-height:520px;background:linear-gradient(100deg,#080909,#55584d);color:white;display:flex;align-items:center}.hero h1{font-size:clamp(52px,8vw,92px);line-height:.88;letter-spacing:-6px;margin:18px 0}.eyebrow{font-size:11px;letter-spacing:3px;font-weight:900}.btn{border:0;background:#111;color:white;padding:12px 17px;border-radius:4px;font-weight:800}.btn.light{background:white;color:#111}.btn.out{background:transparent;color:#111;border:1px solid #111}.section{padding:58px 0}.head{display:flex;justify-content:space-between;align-items:end;margin-bottom:22px}.head h2{font-size:35px;letter-spacing:-2px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:white;border:1px solid #ddd}.pic{height:270px;background:linear-gradient(135deg,#eee,#d1d0ca);display:grid;place-items:center;position:relative}.shirt{width:58%;height:75%;position:relative;filter:drop-shadow(0 15px 10px #0003)}.shirt:before{content:'';position:absolute;inset:10% 5% 0;background:#111;clip-path:polygon(19% 0,34% 8%,50% 13%,66% 8%,81% 0,100% 20%,87% 38%,78% 31%,78% 100%,22% 100%,22% 31%,13% 38%,0 20%)}.shirt:after{content:'STENGHILS';position:absolute;top:48%;left:50%;transform:translate(-50%,-50%) rotate(-5deg);font-weight:900;color:white;font-style:italic;white-space:nowrap}.white:before{background:#fff}.white:after{color:#e83f7e}.olive:before{background:#596044}.cardbody{padding:14px}.price{font-weight:900}.muted{color:#777}.stock{font-size:11px;font-weight:800}.ok{color:#35763b}.low{color:#a76e14}.no{color:#b52b2b}.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.panel{background:white;border:1px solid #ddd;padding:22px}.form{display:grid;gap:12px;max-width:520px}.form input,.form textarea,.form select{padding:12px;border:1px solid #ccc;background:white}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:11px;border-bottom:1px solid #ddd;text-align:left}.admin{min-height:100vh;background:#eee}.adminnav{background:#101112;color:#fff;padding:16px}.footer{background:#101112;color:#fff;padding:45px 0}.footergrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}.error{color:#b22}.success{color:#276d35}.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#eee;font-size:11px}@media(max-width:850px){.navlinks{display:none}.grid{grid-template-columns:repeat(2,1fr)}.footergrid{grid-template-columns:1fr}.pic{height:220px}}@media(max-width:520px){.grid{grid-template-columns:1fr 1fr}.search{width:120px}.hero h1{font-size:54px}.section{padding:42px 0}}
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+}
+
+body {
+  min-height: 100vh;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+button {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* HEADER */
+header {
+  background: #fff;
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+
+nav {
+  background: #fff;
+  color: #000;
+}
+
+/* HALAMAN */
+main,
+.section {
+  background: #fff;
+  color: #000;
+}
+
+/* JUDUL */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #000;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* TEKS */
+p,
+span,
+label,
+strong,
+b {
+  color: #000;
+  font-weight: 700;
+}
+
+/* PANEL / KOTAK */
+.panel {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+}
+
+/* TOMBOL */
+.btn,
+button {
+  background: #000;
+  color: #fff;
+  border: 2px solid #000;
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.btn:hover,
+button:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* INPUT */
+input,
+select,
+textarea {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+  font-weight: 700;
+  padding: 12px;
+}
+
+/* GARIS */
+hr {
+  border: 0;
+  border-top: 2px solid #000;
+}
+
+/* GAMBAR PRODUK */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 38px;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  .section {
+    padding: 24px 18px;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .btn,
+  button {
+    width: 100%;
+    min-height: 58px;
+  }
+}
