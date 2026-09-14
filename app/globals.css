@@ -1,19 +1,27 @@
+/* ==================== RESET ==================== */
+
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
   background: #fff;
   color: #000;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 700;
-}
-
-body {
-  min-height: 100vh;
+  line-height: 1.5;
 }
 
 a {
@@ -22,32 +30,89 @@ a {
   font-weight: 700;
 }
 
-button {
+button,
+input,
+select,
+textarea {
   font-family: Arial, Helvetica, sans-serif;
-  font-weight: 700;
+}
+
+button {
   cursor: pointer;
 }
 
-/* HEADER */
+/* ==================== HEADER ==================== */
+
 header {
+  width: 100%;
   background: #fff;
-  color: #000;
   border-bottom: 2px solid #000;
 }
 
 nav {
+  width: 100%;
   background: #fff;
-  color: #000;
+  border-bottom: 2px solid #000;
 }
 
-/* HALAMAN */
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.nav-menu a {
+  color: #000;
+  font-size: 15px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.nav-menu a:hover {
+  text-decoration: underline;
+}
+
+.cart-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #000;
+  color: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+/* ==================== LAYOUT ==================== */
+
 main,
 .section {
+  width: 100%;
   background: #fff;
   color: #000;
 }
 
-/* JUDUL */
+.wrap {
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+/* ==================== TEXT ==================== */
+
 h1,
 h2,
 h3,
@@ -56,36 +121,63 @@ h5,
 h6 {
   color: #000;
   font-weight: 800;
-  letter-spacing: 0.5px;
+  margin-top: 0;
 }
 
-/* TEKS */
-p,
-span,
-label,
-strong,
-b {
+h1 {
+  font-size: clamp(42px, 8vw, 80px);
+  line-height: 1.05;
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-size: clamp(30px, 5vw, 48px);
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 28px;
+}
+
+p {
   color: #000;
   font-weight: 700;
 }
 
-/* PANEL / KOTAK */
+strong,
+b,
+label,
+span {
+  font-weight: 800;
+}
+
+/* ==================== PANEL / KOTAK ==================== */
+
 .panel {
   background: #fff;
   color: #000;
   border: 2px solid #000;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-/* TOMBOL */
+/* ==================== TOMBOL ==================== */
+
 .btn,
 button {
   background: #000;
   color: #fff;
   border: 2px solid #000;
   padding: 16px 24px;
+  min-height: 52px;
   font-size: 16px;
   font-weight: 800;
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .btn:hover,
@@ -94,57 +186,222 @@ button:hover {
   color: #000;
 }
 
-/* INPUT */
+/* ==================== INPUT ==================== */
+
 input,
 select,
 textarea {
+  width: 100%;
   background: #fff;
   color: #000;
   border: 2px solid #000;
+  padding: 14px;
+  font-size: 16px;
   font-weight: 700;
-  padding: 12px;
+  outline: none;
 }
 
-/* GARIS */
-hr {
-  border: 0;
-  border-top: 2px solid #000;
+input:focus,
+select:focus,
+textarea:focus {
+  border: 3px solid #000;
 }
 
-/* GAMBAR PRODUK */
-img {
-  max-width: 100%;
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* ==================== SEARCH ==================== */
+
+input::placeholder {
+  color: #555;
+  font-weight: 700;
+}
+
+/* ==================== PRODUCT ==================== */
+
+.product-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.product-card {
+  background: #fff;
+  color: #000;
+  border: 2px solid #000;
+  overflow: hidden;
+}
+
+.product-card img {
+  width: 100%;
   height: auto;
+  display: block;
 }
 
-/* MOBILE */
+.product-card > div {
+  padding: 18px;
+}
+
+.product-card h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.product-card p {
+  margin: 6px 0;
+}
+
+/* ==================== CATEGORY ==================== */
+
+.category-list {
+  width: 100%;
+  background: #000;
+  border: 2px solid #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-list a {
+  color: #fff;
+  padding: 22px;
+  text-align: center;
+  border-bottom: 1px solid #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.category-list a:last-child {
+  border-bottom: none;
+}
+
+.category-list a:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* ==================== FORM ==================== */
+
+form {
+  width: 100%;
+}
+
+form > div {
+  margin-bottom: 16px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* ==================== SUCCESS / ERROR ==================== */
+
+.success {
+  color: #000;
+  background: #fff;
+  border: 2px solid #000;
+  padding: 12px;
+  font-weight: 800;
+}
+
+.error {
+  color: #fff;
+  background: #000;
+  border: 2px solid #000;
+  padding: 12px;
+  font-weight: 800;
+}
+
+/* ==================== MOBILE ==================== */
+
 @media (max-width: 768px) {
-  body {
+  .nav-container {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .nav-menu {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .nav-menu a {
+    font-size: 13px;
+  }
+
+  .cart-icon {
+    align-self: flex-end;
+    width: 46px;
+    height: 46px;
+  }
+
+  .wrap {
+    width: calc(100% - 28px);
+    padding: 28px 0;
+  }
+
+  h1 {
+    font-size: 44px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  h3 {
+    font-size: 24px;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .btn,
+  button {
+    width: 100%;
+    min-height: 52px;
+  }
+
+  input,
+  select,
+  textarea {
     font-size: 16px;
+  }
+}
+
+/* ==================== SMALL MOBILE ==================== */
+
+@media (max-width: 480px) {
+  .nav-menu {
+    gap: 10px;
+  }
+
+  .nav-menu a {
+    font-size: 12px;
   }
 
   h1 {
     font-size: 38px;
-    line-height: 1.1;
   }
 
   h2 {
     font-size: 28px;
   }
 
-  .section {
-    padding: 24px 18px;
-  }
-
   .wrap {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .btn,
-  button {
-    width: 100%;
-    min-height: 58px;
+    width: calc(100% - 20px);
   }
 }
