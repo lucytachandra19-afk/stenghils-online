@@ -1,179 +1,259 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
+import { useState } from 'react'
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [currencyOpen, setCurrencyOpen] = useState(false)
-  const [subscribeOpen, setSubscribeOpen] = useState(false)
-  const [currency, setCurrency] = useState('IDR')
-
-  const currencies = [
-    { code: 'USD', name: 'US Dollar (USD)', flag: '🇺🇸' },
-    { code: 'EUR', name: 'Euro (EUR)', flag: '🇪🇺' },
-    { code: 'MYR', name: 'Malaysian Ringgit (MYR)', flag: '🇲🇾' },
-    { code: 'IDR', name: 'Indonesian Rupiah (IDR)', flag: '🇮🇩' },
-  ]
+  const [menu, setMenu] = useState(false)
+  const [account, setAccount] = useState(false)
+  const [language, setLanguage] = useState(false)
+  const [currency, setCurrency] = useState(false)
+  const [subscribe, setSubscribe] = useState(false)
 
   return (
     <main className="home">
 
       {/* HEADER */}
-      <header className="site-header">
+      <header className="home-header">
 
         <button
-          className="icon-btn"
-          onClick={() => setMenuOpen(true)}
+          className="icon-button"
+          onClick={() => setMenu(true)}
           aria-label="Menu"
         >
-          ☰
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
 
-        <button className="icon-btn" aria-label="Search">
-          ⌕
+        <button className="icon-button" aria-label="Search">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-4-4" />
+          </svg>
         </button>
 
         <Link href="/" className="logo">
           STENGHILS
         </Link>
 
-        <Link href="/account" className="icon-btn" aria-label="Account">
-          ♙
-        </Link>
+        <button
+          className="icon-button"
+          onClick={() => setAccount(true)}
+          aria-label="Account"
+        >
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="7" r="4" />
+            <path d="M4 21c0-4 3.5-7 8-7s8 3 8 7" />
+          </svg>
+        </button>
 
-        <Link href="/cart" className="icon-btn" aria-label="Cart">
-          ♧
+        <Link href="/cart" className="icon-button" aria-label="Cart">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 5h2l2 12h11l2-9H6" />
+            <circle cx="9" cy="21" r="1.5" />
+            <circle cx="18" cy="21" r="1.5" />
+          </svg>
         </Link>
 
       </header>
 
+
       {/* HERO */}
-      <section className="hero">
+      <section
+        className="hero"
+        onClick={() => {
+          window.location.href = '/shop'
+        }}
+      >
+
+        {/* GANTI /hero.jpg DENGAN FOTO HERO KAMU */}
+        <img
+          src="/hero.jpg"
+          alt="STENGHILS Black Capsule"
+          className="hero-image"
+        />
 
         <div className="hero-overlay"></div>
 
         <div className="hero-content">
-          <p className="hero-small">
+
+          <div className="hero-small">
             STENGHILS
-          </p>
+          </div>
 
           <h1>
-            BLACK<br />
+            BLACK
+            <br />
             CAPSULE
           </h1>
 
-          <p className="hero-date">
+          <p>
             ONLINE RELEASE · 12.09.26
           </p>
 
-          <Link href="/shop" className="hero-button">
+          <Link
+            href="/shop"
+            className="shop-button"
+            onClick={(e) => e.stopPropagation()}
+          >
             SHOP NOW
           </Link>
+
         </div>
 
       </section>
 
-      {/* SIDE MENU */}
-      {menuOpen && (
-        <div className="menu-overlay">
 
-          <div className="side-menu">
+      {/* SUBSCRIBE */}
+      <button
+        className="subscribe-button"
+        onClick={() => setSubscribe(true)}
+      >
+        SUBSCRIBE
+      </button>
 
-            <button
-              className="close-btn"
-              onClick={() => setMenuOpen(false)}
-            >
-              ×
+
+      {/* CURRENCY */}
+      <div className="currency-box">
+
+        <button
+          className="currency-current"
+          onClick={() => setCurrency(!currency)}
+        >
+          🇮🇩
+          <span>IDR</span>
+          <span>{currency ? '⌃' : '⌄'}</span>
+        </button>
+
+        {currency && (
+          <div className="currency-menu">
+
+            <button onClick={() => setCurrency(false)}>
+              🇺🇸 US Dollar (USD)
             </button>
 
-            <nav>
-              <Link
-                href="/"
-                onClick={() => setMenuOpen(false)}
-              >
-                HOME
-              </Link>
+            <button onClick={() => setCurrency(false)}>
+              🇪🇺 Euro (EUR)
+            </button>
 
-              <Link
-                href="/shop"
-                onClick={() => setMenuOpen(false)}
-              >
-                SHOP
-                <span>›</span>
-              </Link>
+            <button onClick={() => setCurrency(false)}>
+              🇲🇾 Malaysian Ringgit (MYR)
+            </button>
 
-              <Link
-                href="/lookbooks"
-                onClick={() => setMenuOpen(false)}
-              >
-                LOOKBOOKS
-              </Link>
-            </nav>
+            <button onClick={() => setCurrency(false)}>
+              🇮🇩 Indonesian Rupiah (IDR)
+            </button>
 
-            {/* CURRENCY */}
-            <div className="currency-box">
+          </div>
+        )}
 
-              <button
-                className="currency-current"
-                onClick={() =>
-                  setCurrencyOpen(!currencyOpen)
-                }
-              >
-                <span>🇮🇩</span>
-                <b>{currency}</b>
-                <span>
-                  {currencyOpen ? '⌃' : '⌄'}
-                </span>
-              </button>
+      </div>
 
-              {currencyOpen && (
-                <div className="currency-list">
 
-                  <div className="currency-title">
-                    Currency
-                  </div>
+      {/* LANGUAGE */}
+      <div className="language-box">
 
-                  {currencies.map((item) => (
-                    <button
-                      key={item.code}
-                      onClick={() => {
-                        setCurrency(item.code)
-                        setCurrencyOpen(false)
-                      }}
-                    >
-                      <span>{item.flag}</span>
-                      <span>{item.name}</span>
-                    </button>
-                  ))}
+        <button
+          className="language-current"
+          onClick={() => setLanguage(!language)}
+        >
+          🌐 ID
+          <span>{language ? '⌃' : '⌄'}</span>
+        </button>
 
-                </div>
-              )}
+        {language && (
+          <div className="language-menu">
 
-            </div>
+            <button onClick={() => setLanguage(false)}>
+              🇮🇩 Bahasa Indonesia
+            </button>
+
+            <button onClick={() => setLanguage(false)}>
+              🇬🇧 English
+            </button>
+
+          </div>
+        )}
+
+      </div>
+
+
+      {/* SIDE MENU */}
+      {menu && (
+        <div className="drawer">
+
+          <button
+            className="close-button"
+            onClick={() => setMenu(false)}
+          >
+            ×
+          </button>
+
+          <nav>
+
+            <Link href="/" onClick={() => setMenu(false)}>
+              HOME
+            </Link>
+
+            <Link href="/shop" onClick={() => setMenu(false)}>
+              SHOP
+            </Link>
+
+            <Link href="/lookbooks" onClick={() => setMenu(false)}>
+              LOOKBOOKS
+            </Link>
+
+          </nav>
+
+        </div>
+      )}
+
+
+      {/* ACCOUNT */}
+      {account && (
+        <div className="bottom-panel">
+
+          <div className="panel-title">
+            Account
+
+            <button onClick={() => setAccount(false)}>
+              ×
+            </button>
+          </div>
+
+          <Link
+            href="/login"
+            className="account-login"
+          >
+            Sign in
+          </Link>
+
+          <div className="account-grid">
+
+            <Link href="/account">
+              ♧ Orders
+            </Link>
+
+            <Link href="/account">
+              ♙ Profile
+            </Link>
 
           </div>
 
         </div>
       )}
 
-      {/* SUBSCRIBE BUTTON */}
-      <button
-        className="subscribe-button"
-        onClick={() => setSubscribeOpen(true)}
-      >
-        SUBSCRIBE
-      </button>
 
-      {/* SUBSCRIBE POPUP */}
-      {subscribeOpen && (
-        <div className="subscribe-overlay">
+      {/* SUBSCRIBE MODAL */}
+      {subscribe && (
+        <div className="modal-background">
 
           <div className="subscribe-modal">
 
             <button
-              className="subscribe-close"
-              onClick={() => setSubscribeOpen(false)}
+              className="modal-close"
+              onClick={() => setSubscribe(false)}
             >
               ×
             </button>
@@ -189,16 +269,12 @@ export default function Home() {
               placeholder="Email"
             />
 
-            <button
-              className="subscribe-submit"
-              onClick={() => setSubscribeOpen(false)}
-            >
+            <button className="submit-button">
               Submit
             </button>
 
             <small>
-              By signing up, you agree to receive
-              marketing emails.
+              By signing up, you agree to receive marketing emails.
             </small>
 
           </div>
